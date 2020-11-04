@@ -14,16 +14,19 @@
 Route::get('/', function () {
     return view('welcome');
 });
-
 Route::namespace('Admin')->name('admin.')->prefix('administracja')->group(function () {
 
-    Route::get('/', 'DashboardController@index')->name('index');
     Route::prefix('dashboard')->name('dashboard.')->group(function () {
         Route::get('/', 'DashboardController@index')->name('index');
     });
+
+
+    Route::get('/', 'ChatController@chat');
+    Route::post('/send', 'ChatController@send');
 
 
     Route::get('login', 'LoginController@index')->name('login');
 
 });
 Auth::routes();
+
