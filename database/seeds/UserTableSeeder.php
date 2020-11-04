@@ -21,5 +21,40 @@ class UserTableSeeder extends Seeder
             'admin' => true,
         ]);
 
+        User::create([
+            'name' => 'Gerard',
+            'email' => 'gerard@admin.pl',
+            'password' => Hash::make('123qwe'),
+            'admin' => true,
+        ]);
+
+        User::create([
+            'name' => 'Norbert',
+            'email' => 'norbert@admin.pl',
+            'password' => Hash::make('123qwe'),
+            'admin' => true,
+        ]);
+
+        User::create([
+            'name' => 'Gość 1',
+            'email' => 'gosc1@admin.pl',
+            'password' => Hash::make('123qwe'),
+            'admin' => true,
+        ]);
+
+        User::create([
+            'name' => 'Gość 2',
+            'email' => 'gosc2@admin.pl',
+            'password' => Hash::make('123qwe'),
+            'admin' => true,
+        ]);
+
+        User::create([
+            'name' => 'Gość 3',
+            'email' => 'gosc3@admin.pl',
+            'password' => Hash::make('123qwe'),
+            'admin' => true,
+        ]);
+
     }
 }
