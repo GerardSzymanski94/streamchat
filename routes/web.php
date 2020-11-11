@@ -21,8 +21,11 @@ Route::namespace('Admin')->name('admin.')->prefix('administracja')->group(functi
     });
 
 
-    Route::get('/', 'ChatController@chat');
+    Route::get('/', 'ChatController@chat')->name('index');
     Route::post('/send', 'ChatController@send');
+    Route::post('/getOldMessages', 'ChatController@getOldMessages');
+    Route::get('/getOldMessagesTest', 'ChatController@getOldMessagesTest');
+    Route::post('/saveToSession', 'ChatController@saveToSession');
 
 
     Route::get('login', 'LoginController@index')->name('login');

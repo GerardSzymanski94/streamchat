@@ -19,7 +19,9 @@
         CHAT ROOM
         <div class="offset-4 col-md-4">
 
-            <li class="list-group-item active">Chat</li>
+            <li class="list-group-item active">Chat <span
+                    class="badge badge-pill badge-warning">@{{ numberOfUsers }} </span>
+            </li>
             <div class="badge badge-pill">
                 @{{ typing }}
             </div>

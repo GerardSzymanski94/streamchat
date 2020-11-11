@@ -17,7 +17,7 @@ class RedirectAdminMiddleware
     public function handle($request, Closure $next)
     {
         if (auth()->user() && auth()->user()->admin) {
-            return redirect()->route('admin.index');
+            return redirect()->route('admin');
         }
 
         return $next($request);

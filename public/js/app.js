@@ -56395,7 +56395,8 @@ var app = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
     typing: '',
     typinguser: {
       user: []
-    }
+    },
+    numberOfUsers: 0
   },
   watch: {
     message: function message() {
@@ -56411,15 +56412,16 @@ var app = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
       var _this = this;
 
       if (this.message.length > 0) {
+        var time = this.getTime();
         this.chat.message.push(this.message);
         this.chat.color.push('success');
         this.chat.user.push('Ty');
-        this.chat.time.push(this.getTime());
+        this.chat.time.push(time);
         axios.post('administracja/send', {
           message: this.message,
-          user: this.user,
-          color: this.color,
-          time: this.getTime()
+          color: 'success',
+          time: time,
+          chat: this.chat
         }).then(function (response) {
           _this.message = '';
         })["catch"](function (error) {
@@ -56430,25 +56432,63 @@ var app = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
     getTime: function getTime() {
       var time = new Date();
       return time.getHours() + ':' + time.getMinutes() + ":" + time.getSeconds();
+    },
+    getOldMessages: function getOldMessages() {
+      var _this2 = this;
+
+      axios.post('administracja/getOldMessages').then(function (response) {
+        console.log(response);
+
+        if (response.data != '') {
+          _this2.chat = response.data;
+        }
+      })["catch"](function (error) {
+        console.log(error);
+      });
     }
   },
   mounted: function mounted() {
-    var _this2 = this;
+    var _this3 = this;
 
+    this.getOldMessages();
     Echo["private"]('chat').listen('ChatEvent', function (e) {
-      _this2.chat.message.push(e.message);
+      var time = _this3.getTime();
 
-      _this2.chat.user.push(e.user);
+      _this3.chat.message.push(e.message);
 
-      _this2.chat.color.push('warning');
+      _this3.chat.user.push(e.user);
 
-      _this2.chat.time.push(_this2.getTime());
+      _this3.chat.color.push('warning');
+
+      _this3.chat.time.push(time);
+      /* axios.post('administracja/saveToSession', {
+           chat: this.chat,
+           message: e.message,
+           color: 'warning',
+           time: time,
+       })
+           .then(response => {
+           })
+           .catch(error => {
+               console.log(error);
+           });*/
+
     }).listenForWhisper('typing', function (e) {
       if (e.name != "") {
-        _this2.typing = e.user + 'pisze...';
+        _this3.typing = e.user + 'pisze...';
       } else {
-        _this2.typing = '';
+        _this3.typing = '';
       }
+    });
+    Echo.join("chat").here(function (users) {
+      _this3.numberOfUsers = users.length;
+    }).joining(function (user) {
+      _this3.numberOfUsers += 1;
+      console.log('in: ' + user.name);
+    }).leaving(function (user) {
+      _this3.numberOfUsers -= 1;
+      console.log('out: ' + user.name);
+    }).listen('NewMessage', function (e) {//
     });
   }
 });
