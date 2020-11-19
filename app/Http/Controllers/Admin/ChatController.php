@@ -8,6 +8,7 @@ use App\Models\ChatHistory;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Vimeo\Vimeo;
 
 class ChatController extends BaseController
 {
@@ -19,7 +20,7 @@ class ChatController extends BaseController
     public function send(Request $request)
     {
         $user = User::find(Auth::id());
-        $this->saveToSession($request,$user);
+        $this->saveToSession($request, $user);
         event(new ChatEvent($request->message, $user));
     }
 
@@ -27,7 +28,7 @@ class ChatController extends BaseController
     {
         //dd($request);
 
-        if(!is_null($request->message)){
+        if (!is_null($request->message)) {
             ChatHistory::create([
                 'messages' => $request->message,
                 'color' => $request->color,
@@ -63,6 +64,15 @@ class ChatController extends BaseController
 
     public function getOldMessagesTest()
     {
+        /*        for($i=0;$i<1000;$i++){
+                    ChatHistory::create([
+                        'messages' => 'test '.$i,
+                        'color' => 'success',
+                        'user' =>'test',
+                        'time' => '15:44:44',
+                    ]);
+                }*/
+
         $chatHistories = ChatHistory::all();
         $data = [];
         $data['message'] = [];
@@ -81,4 +91,5 @@ class ChatController extends BaseController
         dd($data);
         dd(session('chat'));
     }
+
 }
